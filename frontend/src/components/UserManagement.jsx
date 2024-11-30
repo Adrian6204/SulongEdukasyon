@@ -10,8 +10,8 @@ const UserManagement = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Use the environment variable for the API URL
-  const apiUrl = process.env.REACT_APP_API_URL;
+  // Use the environment variable for the API URL (Vite approach)
+  const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
   // Sign In Handler
   const handleSignIn = (e) => {
