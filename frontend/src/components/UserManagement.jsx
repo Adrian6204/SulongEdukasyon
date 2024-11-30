@@ -4,33 +4,74 @@ import '../css/UserManagement.css';
 
 const UserManagement = () => {
   const [rightPanelActive, setRightPanelActive] = useState(false);
-  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
-  const navigate = useNavigate(); 
+  // Use the environment variable for the API URL
+  const apiUrl = process.env.REACT_APP_API_URL;
 
+  // Sign In Handler
   const handleSignIn = (e) => {
     e.preventDefault();
-    if (email === "test@test.com" && password === "test1234") {
-      navigate('/dashboard'); 
-      setErrorMessage('');
-    } else {
-      setErrorMessage('Invalid email or password.'); 
-    }
+
+    fetch(`${apiUrl}/users/${email}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Invalid email or password');
+        }
+        return response.json();
+      })
+      .then(userData => {
+        if (userData.password === password) {
+          navigate('/dashboard');
+          setErrorMessage('');
+        } else {
+          setErrorMessage('Invalid email or password');
+        }
+      })
+      .catch(error => {
+        setErrorMessage(error.message);
+      });
   };
 
+  // Sign Up Handler
   const handleSignUp = (e) => {
     e.preventDefault();
     if (!email || !password || !role) {
       setErrorMessage('All fields are required.');
       return;
     }
-    console.log(`Signing up as ${role} with email: ${email}`);
-    setErrorMessage('');
-    alert(`Account created successfully as ${role}`);
+
+    const newUser = {
+      email: email,
+      password: password,
+      role: role,
+    };
+
+    fetch(`${apiUrl}/users/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newUser),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to create account');
+        }
+        return response.json();
+      })
+      .then(userData => {
+        alert(`Account created successfully as ${role}`);
+        setErrorMessage('');
+      })
+      .catch(error => {
+        setErrorMessage(error.message);
+      });
   };
 
   return (
