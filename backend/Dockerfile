@@ -1,10 +1,9 @@
-FROM openjdk:23-jdk-slim AS build
-WORKDIR /app
-COPY backend/pom.xml .
-RUN mvn clean package -DskipTests
-
 FROM openjdk:23-jdk-slim
 WORKDIR /app
-COPY --from=build /app/target/SulongEdukasyon.jar /app/SulongEdukasyon.jar
+COPY backend/pom.xml .
+RUN apt-get update && apt-get install -y maven
+
+COPY backend/src /app/src
+RUN mvn clean package -DskipTests
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/SulongEdukasyon.jar"]
+CMD ["java", "-jar", "target/SulongEdukasyon.jar"]
