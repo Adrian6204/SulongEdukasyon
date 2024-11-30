@@ -7,6 +7,7 @@ const UserManagement = () => {
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate(); 
@@ -21,15 +22,52 @@ const UserManagement = () => {
     }
   };
 
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    if (!email || !password || !role) {
+      setErrorMessage('All fields are required.');
+      return;
+    }
+    console.log(`Signing up as ${role} with email: ${email}`);
+    setErrorMessage('');
+    alert(`Account created successfully as ${role}`);
+  };
+
   return (
     <div className={`container ${rightPanelActive ? 'right-panel-active' : ''}`} id="container">
       <div className="form-container sign-up-container">
-        <form>
+        <form onSubmit={handleSignUp}>
           <h1>Create Account</h1>
-          <input type="text" placeholder="Name" />
-          <input type="email" placeholder="Email" />
-          <input type="password" placeholder="Password" />
-          <button>Sign Up</button>
+          <input 
+            type="text" 
+            placeholder="Name" 
+            required 
+          />
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+          <input 
+            type="password" 
+            placeholder="Password" 
+            value={password} 
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
+          />
+          <select 
+            value={role} 
+            onChange={(e) => setRole(e.target.value)} 
+            required
+          >
+            <option value="" disabled>Select Role</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+          </select>
+          {errorMessage && <p className="error">{errorMessage}</p>}
+          <button type="submit">Sign Up</button>
         </form>
       </div>
 
@@ -41,12 +79,14 @@ const UserManagement = () => {
             placeholder="Email" 
             value={email} 
             onChange={(e) => setEmail(e.target.value)} 
+            required 
           />
           <input 
             type="password" 
             placeholder="Password" 
             value={password} 
             onChange={(e) => setPassword(e.target.value)} 
+            required 
           />
           {errorMessage && <p className="error">{errorMessage}</p>}
           <a href="#">Forgot your password?</a>
