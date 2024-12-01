@@ -117,6 +117,6 @@ public class UserService {
     }
 
     private String generateOTP() {
-        return String.valueOf((int) (Math.random() * 10000)); // Generates a random 4-digit OTP
+        return String.valueOf((int) (Math.random() * 10000));
     }
 }
