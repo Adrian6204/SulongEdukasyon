@@ -6,6 +6,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.Collections;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -22,6 +28,18 @@ public class AppSecurityConfig {
             .authorizeHttpRequests(registry -> registry
                     .requestMatchers("/**").permitAll()
                 );
-        return http.build(); 
+        return http.build();
+    }
+
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Collections.singletonList("*")); 
+        config.setAllowedMethods(Collections.singletonList("*")); 
+        config.setAllowedHeaders(Collections.singletonList("*")); 
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }
