@@ -3,14 +3,13 @@ package com.SulongEdukasyon.Sulong.Edukasyon.config;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.*;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -36,9 +35,9 @@ public class AppSecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Collections.singletonList("*")); 
-        config.setAllowedMethods(Collections.singletonList("*")); 
-        config.setAllowedHeaders(Collections.singletonList("*")); 
+        config.setAllowedOrigins(Arrays.asList("http://localhost:5173", "https://sulongedukasyon.onrender.com"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); 
+        config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "X-Requested-With")); 
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }
