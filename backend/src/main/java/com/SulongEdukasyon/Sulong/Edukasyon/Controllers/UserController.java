@@ -10,10 +10,15 @@ import com.SulongEdukasyon.Sulong.Edukasyon.Service.UserService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> registerUser(@RequestBody RegisterUserDto newUser) {
+        return userService.register(newUser);
+    }
 
     @PostMapping("/forget-password")
     public ResponseEntity<String> forgetPassword(@RequestBody String email) {
@@ -33,11 +38,6 @@ public class UserController {
     @PatchMapping("/change-password")
     public ResponseEntity<String> changePassword(@RequestBody ChangePasswordDto changePass) {
         return userService.changePassword(changePass.getEmail(), changePass.getOldPassword(), changePass.getNewPassword());
-    }
-
-    @PostMapping
-    public ResponseEntity<?> registerUser(@RequestBody RegisterUserDto newUser) {
-        return userService.register(newUser);
     }
 
     @PostMapping("/login")
