@@ -7,19 +7,20 @@ const UserManagement = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Use the environment variable for the API URL (Vite approach)
   const apiUrl = import.meta.env.VITE_BACKEND_URL;
 
-  // Sign In Handler
   const handleSignIn = (e) => {
     e.preventDefault();
 
-    fetch(`${apiUrl}/users/${email}`, {
-      method: 'GET',
+    fetch(`${apiUrl}/users/login`, {
+      method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
     })
       .then(response => {
         if (!response.ok) {
@@ -28,22 +29,17 @@ const UserManagement = () => {
         return response.json();
       })
       .then(userData => {
-        if (userData.password === password) {
-          navigate('/dashboard');
-          setErrorMessage('');
-        } else {
-          setErrorMessage('Invalid email or password');
-        }
+        navigate('/dashboard');
+        setErrorMessage('');
       })
       .catch(error => {
         setErrorMessage(error.message);
       });
   };
 
-  // Sign Up Handler
   const handleSignUp = (e) => {
     e.preventDefault();
-    if (!email || !password || !role) {
+    if (!email || !password || !role || !firstName || !lastName) {
       setErrorMessage('All fields are required.');
       return;
     }
@@ -51,6 +47,8 @@ const UserManagement = () => {
     const newUser = {
       email: email,
       password: password,
+      firstname: firstName,
+      lastname: lastName,
       role: role,
     };
 
@@ -81,7 +79,16 @@ const UserManagement = () => {
           <h1>Create Account</h1>
           <input 
             type="text" 
-            placeholder="Name" 
+            placeholder="First Name" 
+            value={firstName} 
+            onChange={(e) => setFirstName(e.target.value)} 
+            required 
+          />
+          <input 
+            type="text" 
+            placeholder="Last Name" 
+            value={lastName} 
+            onChange={(e) => setLastName(e.target.value)} 
             required 
           />
           <input 
