@@ -1,7 +1,7 @@
 import React from "react";
 import Dashboard from "../components/Dashboard";
 import Sidebar from "../components/Sidebar";
-import "../css/DashboardPage.css";
+import "../css/Dashboard.css";
 
 const DashboardPage = () => {
   return (
