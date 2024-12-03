@@ -18,10 +18,7 @@ body {
   background-color: #f6f5f7;
 }
 
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.header, .main-content {
   background-color: #FFFFFF;
 }
 
@@ -30,8 +27,25 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
-  background-color: #FFFFFF;
+  height: 60px;
   border-bottom: 1px solid #ddd;
+  width: 100%;
+  color: #9f9e9e;
+  z-index: 1;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.content-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
 }
 
 .menu-icon i {
@@ -85,4 +99,10 @@ body {
 
 main {
   padding: 20px;
+}
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
